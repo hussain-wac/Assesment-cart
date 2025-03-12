@@ -1,5 +1,5 @@
-import React from "react";
-import { useSearchParams } from "react-router-dom";
+import React, { use } from "react";
+import { useSearchParams,useNavigate } from "react-router-dom";
 import useSearch from "../hooks/useSearch";
 import FilterSection from "../components/FilterSection";
 import SearchSection from "../components/SearchSection";
@@ -42,15 +42,25 @@ const SearchPage = () => {
     setSearchParams(params);
   };
 
+  const navigate = useNavigate();
+
+
   return (
-    <div className="py-6 bg-gray-50 min-h-screen">
+    <div className="py-6 bg-gray-50">
       <div className="container mx-auto px-4">
+
+        <button onClick={() => navigate("/")} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 mb-2">
+          Go to Home
+        </button>
+
         <div className="flex flex-col md:flex-row gap-6">
        
             <FilterSection
               filterList={filterList}
               filters={filters}
             />
+
+
    
           <div className="md:w-3/4">
             <SearchSection
@@ -67,7 +77,7 @@ const SearchPage = () => {
 
             {error && <ErrorSection error={error} />}
             {isLoading && <LoadingSection />}
-            <ResultSection items={items} />
+            <ResultSection items={items} navigate={navigate}/>
             <PaginationSection page={page} totalPages={totalPages} setPage={setPage} />
           </div>
         </div>

@@ -30,18 +30,7 @@ const Home = () => {
         <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">Start your search</h2>
           <SearchBox className="w-full" />
-          
-          <div className="mt-6 flex flex-wrap gap-2">
-            <p className="text-sm text-gray-600 mr-2">Popular searches:</p>
-            {['Best sellers', 'New arrivals', 'Discounts', 'Trending'].map((tag) => (
-              <span 
-                key={tag} 
-                className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full cursor-pointer hover:bg-blue-200 transition-colors duration-200"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+      
         </div>
       </div>
     </div>
