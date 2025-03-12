@@ -21,7 +21,8 @@ const ResultSection = ({ items }) => (
                   <h5 className="text-gray-800 font-medium mb-2 line-clamp-2">
                     {item.title}
                   </h5>
-                  <div className="flex items-center justify-between mt-auto">
+                </div>
+                  <div className="p-4 border-t border-gray-200">
                     {!item.discount ? (
                       <p className="font-bold text-gray-500 text-lg">
                         {item.price}
@@ -40,7 +41,6 @@ const ResultSection = ({ items }) => (
                       </>
                     )}
                   </div>
-                </div>
               </div>
             </div>
           ))}

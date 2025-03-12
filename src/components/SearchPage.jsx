@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSearchParams } from "react-router-dom";
 import useSearch from "../hooks/useSearch";
 import FilterSection from "../components/FilterSection";
@@ -21,8 +21,6 @@ const SearchPage = () => {
     filterList,
   } = useSearch();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [showFilters, setShowFilters] = useState(true);
-
   const sort = searchParams.get("sort") || "1";
   const reg = searchParams.get("reg") || "en";
 
@@ -48,14 +46,12 @@ const SearchPage = () => {
     <div className="py-6 bg-gray-50 min-h-screen">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row gap-6">
-          {showFilters && (
+       
             <FilterSection
               filterList={filterList}
               filters={filters}
-              onClose={() => setShowFilters(false)}
             />
-          )}
-
+   
           <div className="md:w-3/4">
             <SearchSection
               query={query}
