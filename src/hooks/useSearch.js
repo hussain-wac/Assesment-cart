@@ -1,97 +1,67 @@
 import useSWR from "swr";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const useSearch = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [initialFilterList, setInitialFilterList] = useState(null);
-  const [region, setRegion] = useState({});
 
-  // Basic query/pagination parameters
   const query = searchParams.get("q") || "";
   const page = parseInt(searchParams.get("page"), 10) || 1;
   const size = parseInt(searchParams.get("size"), 10) || 28;
   const sort = searchParams.get("sort") || "1"; 
   const reg = searchParams.get("reg") || "en";
 
-  // Set region based on the 'reg' parameter only once
-  useEffect(() => {
-    if (reg === "en" ) {
-      setRegion({
-        seckey: "Qfj1UUkFItWfVFwWpJ65g0VfhjdVGN",
-        clientid: "7645129791",
-      });
-    }
-    if (reg === "ar") {
-      setRegion({
-        seckey: "Llz5MR37gZ4gJULMwf762w1lQ13Iro",
-        clientid: "5807942863",
-      });
-    }
-  }, [reg]); // Effect will only run when `reg` changes
+  const API_URL = import.meta.env.VITE_API_URL;
 
+  // Directly compute `region` instead of using useEffect or useMemo
+  const region = reg === "en"
+    ? { seckey: "Qfj1UUkFItWfVFwWpJ65g0VfhjdVGN", clientid: "7645129791" }
+    : { seckey: "Llz5MR37gZ4gJULMwf762w1lQ13Iro", clientid: "5807942863" };
+
+  // Build filters dynamically
   const buildFilters = () => {
-    const filters = {};
-
-    const priceParam = searchParams.get("price");
-    if (priceParam) {
-      const [min, max] = priceParam.split("-").map(Number);
-      filters.price = [min, max];
-    }
-
-    const categoryParam = searchParams.get("category");
-    if (categoryParam) {
-      filters.category = categoryParam.split(",");
-    }
-
-    const brandParam = searchParams.get("brand");
-    if (brandParam) {
-      filters.brand = brandParam.split(",");
-    }
-
-    const colorParam = searchParams.get("color");
-    if (colorParam) {
-      filters.color = colorParam.split(",");
-    }
-    return filters;
+    const filterKeys = ["price", "category", "brand", "color"];
+    return filterKeys.reduce((filters, key) => {
+      const param = searchParams.get(key);
+      if (param) {
+        filters[key] = key === "price" ? param.split("-").map(Number) : param.split(",");
+      }
+      return filters;
+    }, {});
   };
 
   const filters = buildFilters();
 
-  const updatePagination = (newPage, newSize) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", newPage);
-    params.set("size", newSize);
-    setSearchParams(params);
+  // Update pagination efficiently
+  const updatePagination = (updates) => {
+    setSearchParams((prevParams) => {
+      const params = new URLSearchParams(prevParams);
+      Object.entries(updates).forEach(([key, value]) => params.set(key, value));
+      return params;
+    });
   };
 
   const { data, error, isLoading } = useSWR(
     query ? [query, page, size, filters, sort, region] : null,
-    async (key) => {
-      const [query, page, size, filters, sort, region] = key;
+    async ([query, page, size, filters, sort, region]) => {
       const { seckey, clientid } = region;
 
-      const requestBody = {
-        search: query,
-        size,
-        page,
-        sort_by: sort,
-        ...(filters && { filter: filters }),
-      };
+      if (!API_URL) throw new Error("API URL is not defined");
 
-      const response = await fetch("https://uat.search-assist.webc.in/api/search", {
+      const response = await fetch(API_URL, {
         method: "POST",
         headers: {
           "Client-id": clientid,
           "Secret-key": seckey,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify({ search: query, size, page, sort_by: sort, ...(filters && { filter: filters }) }),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to fetch data");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Error ${response.status}: Failed to fetch data`);
       }
 
       const responseData = await response.json();
@@ -115,9 +85,9 @@ const useSearch = () => {
     isLoading,
     query,
     page,
-    setPage: (newPage) => updatePagination(newPage, size),
+    setPage: (newPage) => updatePagination({ page: newPage }),
     size,
-    setSize: (newSize) => updatePagination(1, newSize),
+    setSize: (newSize) => updatePagination({ page: 1, size: newSize }),
     filters,
     filterList: initialFilterList || data?.filter_list || [],
   };
