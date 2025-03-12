@@ -15,16 +15,17 @@ const CheckboxFilter = ({ filter, currentFilters }) => {
   };
 
   return (
-    <div className="filter-section mb-3">
-      <h5>{filter.label}</h5>
+    <div className="filter-section mb-3 ">
+      <h5 className="m-2">{filter.label}</h5>
       {filter.options.map((option) => (
-        <div key={option.name}>
-          <label>
+        <div key={option.name} className="gap-2">
+          <label className="ms-2">
             <input
               type="checkbox"
               checked={selectedValues.includes(option.name)}
               onChange={(e) =>
                 handleCheckboxChange(option.name, e.target.checked)
+                
               }
             />
             {option.label} ({option.count})
