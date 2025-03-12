@@ -1,10 +1,9 @@
 import React, { use } from "react";
-import { useSearchParams,useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import useSearch from "../hooks/useSearch";
 import FilterSection from "../components/FilterSection";
 import SearchSection from "../components/SearchSection";
 import ErrorSection from "../components/ErrorSection";
-import LoadingSection from "../components/LoadingSection";
 import ResultSection from "../components/ResultSection";
 import PaginationSection from "../components/PaginationSection";
 
@@ -41,27 +40,19 @@ const SearchPage = () => {
     params.set("page", "1");
     setSearchParams(params);
   };
-
   const navigate = useNavigate();
-
-
   return (
     <div className="py-6 bg-gray-50">
-      <div className="container mx-auto px-4">
-
-        <button onClick={() => navigate("/")} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 mb-2">
+      <div className=" mx-auto px-1">
+        <button
+          onClick={() => navigate("/")}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 mb-2"
+        >
           Go to Home
         </button>
 
         <div className="flex flex-col md:flex-row gap-6">
-       
-            <FilterSection
-              filterList={filterList}
-              filters={filters}
-            />
-
-
-   
+          <FilterSection filterList={filterList} filters={filters} />
           <div className="md:w-3/4">
             <SearchSection
               query={query}
@@ -74,11 +65,17 @@ const SearchPage = () => {
               setSort={setSort}
               setReg={setReg}
             />
-
             {error && <ErrorSection error={error} />}
-            {isLoading && <LoadingSection />}
-            <ResultSection items={items} navigate={navigate}/>
-            <PaginationSection page={page} totalPages={totalPages} setPage={setPage} />
+            <ResultSection
+              items={items}
+              navigate={navigate}
+              isLoading={isLoading}
+            />
+            <PaginationSection
+              page={page}
+              totalPages={totalPages}
+              setPage={setPage}
+            />
           </div>
         </div>
       </div>

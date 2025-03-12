@@ -1,5 +1,5 @@
-import React from 'react';
-import SearchBox from './SearchBox';
+import React from "react";
+import SearchBox from "./SearchBox";
 
 const Home = () => {
   return (
@@ -12,11 +12,10 @@ const Home = () => {
           <p className="text-lg text-gray-600 mb-8">
             Find exactly what you're looking for with our powerful search engine
           </p>
-          
-          {/* Featured categories */}
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-            {['Electronics', 'Fashion', 'Home', 'Books'].map((category) => (
-              <div 
+            {["Electronics", "Fashion", "Home", "Books"].map((category) => (
+              <div
                 key={category}
                 className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer border border-gray-200"
               >
@@ -25,12 +24,11 @@ const Home = () => {
             ))}
           </div>
         </div>
-        
-        {/* Search area with a card-like appearance */}
         <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Start your search</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Start your search
+          </h2>
           <SearchBox className="w-full" />
-      
         </div>
       </div>
     </div>

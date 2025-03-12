@@ -11,8 +11,6 @@ const SearchSection = ({ query, isLoading, error, items, totalItems, sort, reg, 
         </h4>
       </div>
       <SearchBox className="mb-0" />
-
-      {/* Result summary and sort dropdown */}
       {!isLoading && !error && items.length > 0 && (
         <div className="flex justify-between mt-4 text-sm text-gray-600">
           <span>
@@ -22,7 +20,7 @@ const SearchSection = ({ query, isLoading, error, items, totalItems, sort, reg, 
             <span className="mr-2">Sort by:</span>
             <select
               value={sort}
-              className="border-gray-200 rounded-md text-sm bg-gray-50 px-2 py-1"
+              className="border-gray-200 rounded-md text-sm bg-gray-50 "
               onChange={(e) => setSort(e.target.value)}
             >
               <option value="1">Relevance</option>
@@ -33,7 +31,7 @@ const SearchSection = ({ query, isLoading, error, items, totalItems, sort, reg, 
             <span className="mr-2">Region :</span>
             <select
               value={reg}
-              className="border-gray-200 rounded-md text-sm bg-gray-50 px-2 py-1"
+              className="border-gray-200 rounded-md text-sm bg-gray-50  "
               onChange={(e) => setReg(e.target.value)}
             >
               <option value="en">qa-en</option>

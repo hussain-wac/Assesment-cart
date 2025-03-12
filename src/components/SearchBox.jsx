@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { SearchIcon } from 'lucide-react';
-import { Form, Button, InputGroup } from 'react-bootstrap';
+import React, { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { SearchIcon } from "lucide-react";
+import { Form, Button, InputGroup } from "react-bootstrap";
 
 const SearchBox = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
