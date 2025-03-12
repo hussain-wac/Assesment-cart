@@ -1,13 +1,14 @@
 import { useState } from "react";
 
-/**
- * Custom hook to manage the filter expansion logic.
- * @param {Array} filterList - The list of filters to manage.
- * @returns {Array} - The list of visible options and a function to toggle the expansion of each filter.
- */
-const useFilterExpansion = (filterList) => {
+const useFilterExpansion = (filterList, setSearchParams, searchParams) => {
   const [expandedFilters, setExpandedFilters] = useState({});
 
+  const filterKeys = ["price", "category", "brand", "color"];
+
+  // Logic to check if any filters are applied
+  const isAnyFilterApplied = filterKeys.some((key) => searchParams.get(key));
+
+  // Toggle the "See More" / "See Less" functionality for filters
   const toggleSeeMore = (filterKey) => {
     setExpandedFilters((prev) => ({
       ...prev,
@@ -15,16 +16,28 @@ const useFilterExpansion = (filterList) => {
     }));
   };
 
+  // Get the visible options (5 by default, or all if expanded)
   const getVisibleOptions = (filter) => {
     const isExpanded = expandedFilters[filter.attribute];
     const options = Array.isArray(filter.options) ? filter.options : [];
     return isExpanded ? options : options.slice(0, 5);
   };
 
+  // Reset all filters to their initial state
+  const resetFilters = (e) => {
+    e.preventDefault();
+    const newParams = new URLSearchParams(searchParams);
+    filterKeys.forEach((key) => newParams.delete(key));
+    newParams.set("page", 1);
+    setSearchParams(newParams);
+  };
+
   return {
-    getVisibleOptions,
-    toggleSeeMore,
     expandedFilters,
+    toggleSeeMore,
+    getVisibleOptions,
+    isAnyFilterApplied,
+    resetFilters,
   };
 };
 

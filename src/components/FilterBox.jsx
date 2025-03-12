@@ -6,18 +6,15 @@ import useFilterExpansion from "../hooks/useFilterExpansion";
 
 const FilterBox = memo(({ filterList, currentFilters }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { getVisibleOptions, toggleSeeMore, expandedFilters } = useFilterExpansion(filterList);
 
-  const filterKeys = ["price", "category", "brand", "color"];
-  const isAnyFilterApplied = filterKeys.some((key) => searchParams.get(key));
-
-  const resetFilters = (e) => {
-    e.preventDefault();
-    const newParams = new URLSearchParams(searchParams);
-    filterKeys.forEach((key) => newParams.delete(key));
-    newParams.set("page", 1);
-    setSearchParams(newParams);
-  };
+  // Use the custom hook to manage filter expansion and logic
+  const {
+    expandedFilters,
+    toggleSeeMore,
+    getVisibleOptions,
+    isAnyFilterApplied,
+    resetFilters,
+  } = useFilterExpansion(filterList, setSearchParams, searchParams);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 space-y-6">
