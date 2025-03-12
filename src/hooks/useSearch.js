@@ -1,16 +1,34 @@
 import useSWR from "swr";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const useSearch = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [initialFilterList, setInitialFilterList] = useState(null);
+  const [region, setRegion] = useState({});
 
   // Basic query/pagination parameters
   const query = searchParams.get("q") || "";
   const page = parseInt(searchParams.get("page"), 10) || 1;
   const size = parseInt(searchParams.get("size"), 10) || 28;
-  const sort = searchParams.get("sort") || "1"; // default sort: 1 for Relevance
+  const sort = searchParams.get("sort") || "1"; 
+  const reg = searchParams.get("reg") || "en";
+
+  // Set region based on the 'reg' parameter only once
+  useEffect(() => {
+    if (reg === "en" ) {
+      setRegion({
+        seckey: "Qfj1UUkFItWfVFwWpJ65g0VfhjdVGN",
+        clientid: "7645129791",
+      });
+    }
+    if (reg === "ar") {
+      setRegion({
+        seckey: "Llz5MR37gZ4gJULMwf762w1lQ13Iro",
+        clientid: "5807942863",
+      });
+    }
+  }, [reg]); // Effect will only run when `reg` changes
 
   const buildFilters = () => {
     const filters = {};
@@ -48,9 +66,11 @@ const useSearch = () => {
   };
 
   const { data, error, isLoading } = useSWR(
-    query ? [query, page, size, filters, sort] : null,
+    query ? [query, page, size, filters, sort, region] : null,
     async (key) => {
-      const [query, page, size, filters, sort] = key;
+      const [query, page, size, filters, sort, region] = key;
+      const { seckey, clientid } = region;
+
       const requestBody = {
         search: query,
         size,
@@ -62,8 +82,8 @@ const useSearch = () => {
       const response = await fetch("https://uat.search-assist.webc.in/api/search", {
         method: "POST",
         headers: {
-          "Client-id": "7645129791",
-          "Secret-key": "Qfj1UUkFItWfVFwWpJ65g0VfhjdVGN",
+          "Client-id": clientid,
+          "Secret-key": seckey,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
