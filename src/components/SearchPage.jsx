@@ -1,12 +1,12 @@
 import React from "react";
 import {
   Search,
-  Filter,
   ArrowLeft,
   ArrowRight,
   SlidersHorizontal,
   X,
 } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import useSearch from "../hooks/useSearch";
 import SearchBox from "../components/SearchBox";
 import FilterBox from "../components/FilterBox";
@@ -23,6 +23,8 @@ const SearchPage = () => {
     filters,
     filterList,
   } = useSearch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sort = searchParams.get("sort") || "1";
 
   const items = data?.items || [];
   const totalItems = data?.total || 0;
@@ -60,7 +62,7 @@ const SearchPage = () => {
               </div>
               <SearchBox className="mb-0" />
 
-              {/* Result summary */}
+              {/* Result summary and sort dropdown */}
               {!isLoading && !error && items.length > 0 && (
                 <div className="flex justify-between mt-4 text-sm text-gray-600">
                   <span>
@@ -68,11 +70,38 @@ const SearchPage = () => {
                   </span>
                   <div className="flex items-center">
                     <span className="mr-2">Sort by:</span>
-                    <select className="border-gray-200 rounded-md text-sm bg-gray-50 px-2 py-1">
-                      <option>Relevance</option>
-                      <option>Price: Low to High</option>
-                      <option>Price: High to Low</option>
-                      <option>Newest First</option>
+                    <select
+                      value={sort}
+                      className="border-gray-200 rounded-md text-sm bg-gray-50 px-2 py-1"
+                      onChange={(e) => {
+                        const newSort = e.target.value;
+                        const params = new URLSearchParams(searchParams);
+                        params.set("sort", newSort);
+                        // Optionally reset page to 1 on sort change
+                        params.set("page", "1");
+                        setSearchParams(params);
+                      }}
+                    >
+                      <option value="1">Relevance</option>
+                      <option value="4">Newest First</option>
+                    </select>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="mr-2">Region :</span>
+                    <select
+                      value={sort}
+                      className="border-gray-200 rounded-md text-sm bg-gray-50 px-2 py-1"
+                      onChange={(e) => {
+                        const newSort = e.target.value;
+                        const params = new URLSearchParams(searchParams);
+                        params.set("sort", newSort);
+                        // Optionally reset page to 1 on sort change
+                        params.set("page", "1");
+                        setSearchParams(params);
+                      }}
+                    >
+                      <option value="en">qa-en</option>
+                      <option value="ar">qa-ar</option>
                     </select>
                   </div>
                 </div>
@@ -125,11 +154,15 @@ const SearchPage = () => {
                               {item.title}
                             </h5>
                             <div className="flex items-center justify-between mt-auto">
-                              <p className="font-bold text-gray-500 text-lg line-through">
-                                {item.price}
-                              </p>
-                              {item.discount && (
+                              {!item.discount ? (
+                                <p className="font-bold text-gray-500 text-lg">
+                                  {item.price}
+                                </p>
+                              ) : (
                                 <>
+                                  <p className="font-bold text-gray-500 text-lg line-through">
+                                    {item.price}
+                                  </p>
                                   <p className="font-bold text-green-600 text-lg">
                                     {item.sale_price}
                                   </p>
@@ -138,6 +171,7 @@ const SearchPage = () => {
                                   </p>
                                 </>
                               )}
+                             
                             </div>
                           </div>
                         </div>
