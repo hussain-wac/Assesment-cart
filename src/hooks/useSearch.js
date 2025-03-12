@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const useSearch = () => {
@@ -9,34 +9,31 @@ const useSearch = () => {
   const query = searchParams.get("q") || "";
   const page = parseInt(searchParams.get("page"), 10) || 1;
   const size = parseInt(searchParams.get("size"), 10) || 28;
-  const sort = searchParams.get("sort") || "1";
+  const sort = searchParams.get("sort") || "1"; 
   const reg = searchParams.get("reg") || "en";
 
   const API_URL = import.meta.env.VITE_API_URL;
-  if (!API_URL) throw new Error("API URL is not defined");
 
-  const region = useMemo(() =>
-    reg === "en"
-      ? { seckey: "Qfj1UUkFItWfVFwWpJ65g0VfhjdVGN", clientid: "7645129791" }
-      : { seckey: "Llz5MR37gZ4gJULMwf762w1lQ13Iro", clientid: "5807942863" },
-    [reg]
-  );
+  // Directly compute `region` instead of using useEffect or useMemo
+  const region = reg === "en"
+    ? { seckey: "Qfj1UUkFItWfVFwWpJ65g0VfhjdVGN", clientid: "7645129791" }
+    : { seckey: "Llz5MR37gZ4gJULMwf762w1lQ13Iro", clientid: "5807942863" };
 
+  // Build filters dynamically
   const buildFilters = () => {
-    const filters = {};
-
-    ["price", "category", "brand", "color"].forEach((param) => {
-      const value = searchParams.get(param);
-      if (value) {
-        filters[param] = param === "price" ? value.split("-").map(Number) : value.split(",");
+    const filterKeys = ["price", "category", "brand", "color"];
+    return filterKeys.reduce((filters, key) => {
+      const param = searchParams.get(key);
+      if (param) {
+        filters[key] = key === "price" ? param.split("-").map(Number) : param.split(",");
       }
-    });
-
-    return filters;
+      return filters;
+    }, {});
   };
 
-  const filters = useMemo(buildFilters, [searchParams]);
+  const filters = buildFilters();
 
+  // Update pagination efficiently
   const updatePagination = (updates) => {
     setSearchParams((prevParams) => {
       const params = new URLSearchParams(prevParams);
@@ -46,17 +43,11 @@ const useSearch = () => {
   };
 
   const { data, error, isLoading } = useSWR(
-    query ? { query, page, size, filters, sort, region } : null,
-    async ({ query, page, size, filters, sort, region }) => {
+    query ? [query, page, size, filters, sort, region] : null,
+    async ([query, page, size, filters, sort, region]) => {
       const { seckey, clientid } = region;
 
-      const requestBody = {
-        search: query,
-        size,
-        page,
-        sort_by: sort,
-        ...(filters && { filter: filters }),
-      };
+      if (!API_URL) throw new Error("API URL is not defined");
 
       const response = await fetch(API_URL, {
         method: "POST",
@@ -65,7 +56,7 @@ const useSearch = () => {
           "Secret-key": seckey,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify({ search: query, size, page, sort_by: sort, ...(filters && { filter: filters }) }),
       });
 
       if (!response.ok) {
@@ -74,6 +65,7 @@ const useSearch = () => {
       }
 
       const responseData = await response.json();
+
       if (!initialFilterList && query) {
         setInitialFilterList(responseData.filter_list);
       }

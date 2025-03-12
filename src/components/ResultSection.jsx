@@ -1,4 +1,4 @@
-const ResultSection = ({ items }) => (
+const ResultSection = ({ items ,navigate }) => (
     <div className="overflow-auto max-h-[calc(100vh-200px)]">
       {items.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
@@ -52,7 +52,7 @@ const ResultSection = ({ items }) => (
           <p className="text-gray-500 mb-4">
             Try adjusting your search or filters
           </p>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" onClick={() => navigate("/")}>
             Go To Home
           </button>
         </div>
