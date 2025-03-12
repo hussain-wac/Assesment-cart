@@ -30,7 +30,6 @@ const FilterBox = memo(({ filterList, currentFilters, onResetFilters }) => {
             if (filter.attribute === "price") {
               return (
                 <div key="price" className="space-y-2">
-                  <h5 className="font-medium text-gray-700">Price Range</h5>
                   <PriceFilter
                     filter={filter}
                     currentFilters={currentFilters}
@@ -43,10 +42,6 @@ const FilterBox = memo(({ filterList, currentFilters, onResetFilters }) => {
             if (["category", "brand", "color"].includes(filter.attribute)) {
               return (
                 <div key={filter.attribute} className="space-y-2">
-                  <h5 className="font-medium text-gray-700">
-                    {filter.attribute.charAt(0).toUpperCase() +
-                      filter.attribute.slice(1)}
-                  </h5>
                   <CheckboxFilter
                     filter={filter}
                     currentFilters={currentFilters}
