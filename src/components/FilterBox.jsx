@@ -6,8 +6,6 @@ import useFilterExpansion from "../hooks/useFilterExpansion";
 
 const FilterBox = memo(({ filterList, currentFilters }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-
-  // Use the custom hook to manage filter expansion and logic
   const {
     expandedFilters,
     toggleSeeMore,
