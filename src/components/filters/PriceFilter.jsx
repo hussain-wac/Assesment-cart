@@ -4,12 +4,13 @@ import { Range, getTrackBackground } from "react-range";
 
 const PriceFilter = ({ filter, currentFilters }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const min = filter?.options.min_price || 0;
-  const max = filter?.options.max_price || 10000;
+  const min = filter?.options.min_price ;
+  const max = filter?.options.max_price ;
   const initialValues = [
     currentFilters?.price?.[0] || min,
     currentFilters?.price?.[1] || max
   ];
+  console.log(min, max, initialValues);
   const [values, setValues] = useState(initialValues);
   const [isDragging, setIsDragging] = useState(false);
   const finalizeChange = useCallback(() => {
@@ -73,6 +74,7 @@ const PriceFilter = ({ filter, currentFilters }) => {
         </div>
         <div className="font-medium">
           Max: ${values[1]}
+        {console.log("min", values[0], "max", values[1])}
         </div>
       </div>
       {isDragging && (
