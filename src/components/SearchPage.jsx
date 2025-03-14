@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import useSearch from "../hooks/useSearch";
 import FilterSection from "../components/FilterSection";
@@ -6,6 +6,9 @@ import SearchSection from "../components/SearchSection";
 import ErrorSection from "../components/ErrorSection";
 import ResultSection from "../components/ResultSection";
 import PaginationSection from "../components/PaginationSection";
+
+import { HomeIcon } from "lucide-react";
+import Footer from "./Footer";
 
 const SearchPage = () => {
   const {
@@ -46,9 +49,9 @@ const SearchPage = () => {
       <div className=" mx-auto px-1">
         <button
           onClick={() => navigate("/")}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 mb-2"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-12 mt-11 mb-2"
         >
-          Go to Home
+          <HomeIcon className="h-5 w-5 inline-block " />
         </button>
 
         <div className="flex flex-col md:flex-row gap-6">
@@ -78,6 +81,9 @@ const SearchPage = () => {
             />
           </div>
         </div>
+      </div>
+      <div className="mt-10">
+      <Footer/>
       </div>
     </div>
   );

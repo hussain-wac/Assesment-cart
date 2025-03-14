@@ -15,12 +15,9 @@ const PriceFilter = ({ filter }) => {
     Math.max(min, Math.min(max, currentValues[0] || min)),
     Math.min(max, Math.max(min, currentValues[1] || max)),
   ];
-
   const [isDragging, setIsDragging] = useState(false);
   const [draggingValues, setDraggingValues] = useState(null);
-  
   const displayValues = isDragging ? draggingValues : validatedCurrentValues;
-
   if (!filter || min === max) {
     return null;
   }
