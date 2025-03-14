@@ -1,27 +1,30 @@
+import React from "react";
+
 const ResultSection = ({ items, navigate, isLoading }) => (
   <div className="relative overflow-auto max-h-[calc(100vh-200px)]">
-    {/* Spinner Overlay */}
-    {isLoading && (
-      <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-50 z-10">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
-      </div>
-    )}
-
-    {/* Items Container */}
-    <div className={`${isLoading ? "blur-sm" : ""} transition-all duration-300`}>
+    <div
+      className={`${isLoading ? "blur-sm" : ""} transition-all duration-300`}
+    >
       {items.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
           {items.map((item) => (
             <div key={item.id} className="h-full">
               <div className="h-full bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-200 flex flex-col overflow-hidden group">
                 <div className="h-48 relative">
+
                   <div
-                    className="absolute inset-0 bg-cover bg-center"
+                    className={`absolute inset-0 bg-cover bg-center w-full h-full transition-all duration-300 group-hover:scale-105 ${!item.in_stock ? 'grayscale' : ''}`}
                     style={{
                       backgroundImage: `url(${item.image_link})`,
                     }}
                     aria-label={item.title}
                   ></div>
+
+                  {!item.in_stock && (
+                    <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 text-white text-xl font-bold">
+                      Sold Out
+                    </div>
+                  )}
                 </div>
                 <div className="p-4 flex-grow">
                   <p className="text-xs text-gray-500 mb-1">{item.brand_key}</p>
@@ -29,22 +32,24 @@ const ResultSection = ({ items, navigate, isLoading }) => (
                     {item.title}
                   </h5>
                 </div>
-                <div className="p-4 border-t border-gray-200">
+                <div className="p-4">
                   {!item.discount ? (
-                    <p className="font-bold text-gray-500 text-lg">
-                      {item.price}
+                    <p className="font-bold text-black-500 text-lg">
+                      <span className="text text-bold text-sm">KWD</span> {item.price}
                     </p>
                   ) : (
                     <>
-                      <p className="font-bold text-gray-500 text-lg line-through">
-                        {item.price}
+                      <p className="font-bold text-black-600 text-lg">
+                        <span className="text text-bold">KWD</span> {item.sale_price}
                       </p>
-                      <p className="font-bold text-green-600 text-lg">
-                        {item.sale_price}
-                      </p>
-                      <p className="font-bold text-green-600 text-lg">
-                        {item.discount}
-                      </p>
+                      <div className="mt-0 flex items-center">
+                        <p className="font-bold text-gray-500 text-sm line-through mt-1 mr-2">
+                          <span className="text text-bold text-sm">KWD</span> {item.price}
+                        </p>
+                        <p className="font-bold text-green-600 text-sm">
+                          {item.discount}
+                        </p>
+                      </div>
                     </>
                   )}
                 </div>
@@ -67,6 +72,12 @@ const ResultSection = ({ items, navigate, isLoading }) => (
         </div>
       )}
     </div>
+
+    {isLoading && (
+      <div className="absolute inset-0 flex justify-center items-center bg-transparent z-10">
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent shadow-lg"></div>
+      </div>
+    )}
   </div>
 );
 

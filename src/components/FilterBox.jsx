@@ -15,8 +15,8 @@ const FilterBox = memo(({ filterList, currentFilters }) => {
   } = useFilterExpansion(filterList, setSearchParams, searchParams);
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 space-y-6">
-      <div className="border-b border-gray-200 pb-3">
+    <div className=" p-6  space-y-6">
+      <div className="pb-3">
         <h4 className="text-lg font-semibold text-gray-800 mb-1">
           Filter Options
         </h4>
