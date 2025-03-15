@@ -3,7 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 
 const ErrorPage = () => {
     const location = useLocation();
-    const errorCode = 404; // Default error code
+    const errorCode = 404; 
 
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100 text-gray-800">

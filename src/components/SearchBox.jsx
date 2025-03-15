@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Search } from "lucide-react"; // you can keep this or replace it with an MUI icon
+import { Search } from "lucide-react"; 
 import { TextField, Button, IconButton, InputAdornment } from "@mui/material";
 
 const SearchBox = () => {
@@ -37,7 +37,7 @@ const SearchBox = () => {
             ),
           }}
           sx={{
-            borderRadius: "4px 0 0 4px", // To match the rounded left side
+            borderRadius: "4px 0 0 4px", 
             flex: 1,
           }}
         />
@@ -46,8 +46,8 @@ const SearchBox = () => {
           variant="contained"
           color="primary"
           sx={{
-            borderRadius: "0 4px 4px 0", // To match the rounded right side
-            height: "100%", // Ensure the button is aligned with the input
+            borderRadius: "0 4px 4px 0", 
+            height: "100%", 
           }}
         >
           Search

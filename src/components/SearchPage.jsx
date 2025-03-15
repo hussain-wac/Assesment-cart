@@ -48,7 +48,7 @@ const SearchPage = () => {
   return (
     <div className=" bg-gray-50">
 <Header/>
-      <div className="">
+      <div className="S">
         <button
           onClick={() => navigate("/")}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-12 mt-11 mb-2"

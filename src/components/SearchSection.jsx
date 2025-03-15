@@ -12,7 +12,6 @@ const SearchSection = ({ query, isLoading, error, items, totalItems, sort, reg, 
         </Typography>
       </div>
       <SearchBox className="mb-0" />
-      {!isLoading && !error && items.length > 0 && (
         <div className="flex justify-between mt-4 text-sm text-gray-600">
           <Typography variant="body2">
             Showing {items.length} of {totalItems} results
@@ -46,12 +45,7 @@ const SearchSection = ({ query, isLoading, error, items, totalItems, sort, reg, 
             </FormControl>
           </div>
         </div>
-      )}
-      {isLoading && (
-        <div className="flex justify-center mt-4">
-          <CircularProgress />
-        </div>
-      )}
+     
       {error && (
         <div className="flex justify-center mt-4 text-red-600">
           <Typography variant="body2">Error: {error}</Typography>
