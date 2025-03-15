@@ -9,6 +9,7 @@ import PaginationSection from "../components/PaginationSection";
 
 import { HomeIcon } from "lucide-react";
 import Footer from "./Footer";
+import Header from "./Header";
 
 const SearchPage = () => {
   const {
@@ -45,15 +46,15 @@ const SearchPage = () => {
   };
   const navigate = useNavigate();
   return (
-    <div className="py-6 bg-gray-50">
-      <div className=" mx-auto px-1">
+    <div className=" bg-gray-50">
+<Header/>
+      <div className="">
         <button
           onClick={() => navigate("/")}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-12 mt-11 mb-2"
         >
           <HomeIcon className="h-5 w-5 inline-block " />
         </button>
-
         <div className="flex flex-col md:flex-row gap-6">
           <FilterSection filterList={filterList} filters={filters} />
           <div className="md:w-3/4">
@@ -83,8 +84,8 @@ const SearchPage = () => {
         </div>
       </div>
       <div className="mt-10">
-      <Footer/>
       </div>
+      <Footer/>
     </div>
   );
 };

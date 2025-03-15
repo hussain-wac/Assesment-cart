@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Search } from "lucide-react";
+import { Search } from "lucide-react"; // you can keep this or replace it with an MUI icon
+import { TextField, Button, IconButton, InputAdornment } from "@mui/material";
 
 const SearchBox = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,23 +20,38 @@ const SearchBox = () => {
   return (
     <form onSubmit={handleSearch} className="w-full max-w-lg mb-4">
       <div className="flex items-center">
-        <div className="flex items-center justify-center bg-gray-100 rounded-l p-2 border border-gray-300 border-r-0">
-          <Search className="h-5 w-5 text-gray-500" />
-        </div>
-        <input
-          type="text"
+        <TextField
+          fullWidth
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search for products..."
-          aria-label="Search"
-          className="w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          variant="outlined"
+          size="small"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <IconButton edge="start">
+                  <Search className="h-5 w-5 text-gray-500" />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            borderRadius: "4px 0 0 4px", // To match the rounded left side
+            flex: 1,
+          }}
         />
-        <button
+        <Button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-r transition-colors duration-200"
+          variant="contained"
+          color="primary"
+          sx={{
+            borderRadius: "0 4px 4px 0", // To match the rounded right side
+            height: "100%", // Ensure the button is aligned with the input
+          }}
         >
           Search
-        </button>
+        </Button>
       </div>
     </form>
   );
